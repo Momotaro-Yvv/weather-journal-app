@@ -1,12 +1,8 @@
 //client side
 /* Global Variables */
 const baseUrl = 'api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = 'ab1c20bb9bc809aa640a6331291db10b';
-
-
+const apiKey = 'ab1c20bb9bc809aa640a6331291db10b&units=metric';
 //api.openweathermap.org/data/2.5/weather?zip=94040,us&appid={API key}
-
-
 
 // Create a new date instance dynamically with JS
 let d = new Date();
@@ -20,24 +16,24 @@ function performAction(e){
     const fullURL = 'https://'+baseUrl+zipcode+','+countrycode+'&appid='+apiKey;
 
     retrieveData(fullURL)
-        .then(newData => postData('/add', {date:newDate,temp:newData.main.temp,feelings:feelings}))
+        .then((newData) => postData("http://127.0.0.1:5501/add", {date:newDate,temp:newData.main.temp,feelings:feelings}))
         .then(()=> updateUI())
         .catch(error => console.log(error.message));
 };
 
 //Async POST
-const postData = async ( url = '', data = {})=>{
+const postData = async ( url ='', data = {})=>{
     console.log(data);
-    const res = await fetch (url, {
-    method: 'POST',
-    credentials: 'same-origin',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
+    const response = await fetch (url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
     });
     try {
-        const newData = await res.json();
+        const newData = await response.json();
         console.log(newData);
         return newData;
     }catch(error) {
@@ -67,9 +63,9 @@ const updateUI = async() =>{
         const allData = await req.json();
         console.log(allData);
         // docyment.getElementById('entryHolder').innerHTML = allData[0].entryHolder;
-        docyment.getElementById('date').innerHTML = allData[0].date;
-        docyment.getElementById('temp').innerHTML = allData[0].temp;
-        docyment.getElementById('content').innerHTML = allData[0].content;
+        docyment.getElementById('date').innerHTML = allData.date;
+        docyment.getElementById('temp').innerHTML = allData.temp;
+        docyment.getElementById('content').innerHTML = allData.content;
     } catch(error){
         console.log('error:',error.message);
     };

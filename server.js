@@ -15,16 +15,13 @@ app.use(bodyParser.json());
 
 // Cors for cross origin allowance(beacuse by default only origin is allowed)
 const cors = require('cors');
-app.use(cors({
-    origin: "https://127.0.0.1:5501",
-})
-);
+app.use(cors());
 
 // Initialize the main project folder
 app.use(express.static('website'));
 
 // Setup Server
-const port = process.env.PORT || 3000;
+const port =5501;
 const server = app.listen(port,()=>{
     console.log(`Server is now listening on port ${port}`)
 });
@@ -33,7 +30,7 @@ const server = app.listen(port,()=>{
 // Respond when a GET request is made to the homepage
 app.get('/all', (req, res) => {
     res.send(projectData);
-  })
+})
 
 // POST request - creating
 app.post('/add', (req, res) => {
@@ -41,10 +38,10 @@ app.post('/add', (req, res) => {
     res.send(`POST received, request: ${(JSON.stringify(data))}`)
     const newEntry= {
         date: data.date,
-        temp:data.temp,
+        temp: data.temp,
         feelings:data.feelings
     }
 
-    projectData.push(newEntry);
+    projectData = newEntry;
 })
 
