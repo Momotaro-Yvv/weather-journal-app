@@ -39,7 +39,7 @@ app.post('/add', (req, res) => {
     const newEntry= {
         date: data.date,
         temp: data.temp,
-        feelings:data.feelings
+        content:data.feelings
     }
 
     projectData = newEntry;
